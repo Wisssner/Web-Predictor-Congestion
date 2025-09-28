@@ -1,0 +1,57 @@
+/* Espaciado general */
+form label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.4rem;
+}
+
+form input, form select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  margin-bottom: 1.2rem;
+  background: #fff;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 0.8rem;
+}
+
+/* Cards con más espacio */
+.result-card, .api-status-card, form {
+  padding: 2rem;
+}
+
+/* Inputs */
+input:focus, select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Mejora de botones */
+.btn-primary {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  transform: scale(1.05);
+}
+
+/* Grid adaptativo */
+.grid {
+  gap: 2rem;
+}
