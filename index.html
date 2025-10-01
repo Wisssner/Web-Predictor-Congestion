@@ -102,355 +102,661 @@
 </head>
 
 <body class="gradient-bg min-h-screen">
-    <div class="text-center py-8">
-        <h1 class="text-5xl font-bold text-white mb-2"><i class="fas fa-traffic-light mr-3"></i> Predictor de Congestión
-            Vial</h1>
-        <p class="text-white/80 text-lg">Inteligencia Artificial para predecir el tráfico en tiempo real</p>
+   <div class="flex items-center justify-center py-8 space-x-4">
+    <!-- Texto -->
+    <div class="text-center">
+        <h1 class="text-5xl font-bold text-white mb-2">
+            <i class="fas fa-traffic-light mr-3"></i> Predictor de Congestión Vial
+        </h1>
+        <p class="text-white/80 text-lg">
+            Inteligencia Artificial para predecir el tráfico en tiempo real
+        </p>
     </div>
 
+    <!-- Imagen como icono -->
+    <img src="ciudad.png" alt="Ciudad" class="w-40 h-40 object-contain">
+</div>
+
+</div>
+
     <div class="max-w-7xl mx-auto px-4 pb-8">
-        <div class="grid lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2">
-                <form id="predictForm" class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                        <!-- 🌍 Ubicación & Tráfico -->
-                        <!-- 🌍 Ubicación & Tráfico -->
-                        <div>
-                            <h3 class="section-title text-blue-600">
-                                <i class="fas fa-map-marker-alt mr-2"></i>Ubicación & Tráfico
-                            </h3>
-
-                            <label>Severidad
-                                <select name="severity" required>
-                                    <option value="0">0 - Muy leve</option>
-                                    <option value="1">1 - Leve</option>
-                                    <option value="2" selected>2 - Moderada</option>
-                                    <option value="3">3 - Grave</option>
-                                </select>
-                            </label>
-
-                            <label>Distancia (millas)
-                                <input type="number" step="0.1" name="distance_mi" value="2.0" required>
-                            </label>
-
-                            <!-- ✅ Latitud con datalist -->
-                            <label>Latitud
-                                <input list="latitudes" name="start_lat" value="38.90" step="0.0001" required>
-                                <datalist id="latitudes">
-                                    <option value="25.76">25.76 – Miami, FL</option>
-                                    <option value="34.05">34.05 – Los Ángeles, CA</option>
-                                    <option value="38.90">38.90 – Washington, DC</option>
-                                    <option value="40.71">40.71 – Nueva York, NY</option>
-                                    <option value="41.88">41.88 – Chicago, IL</option>
-                                </datalist>
-                            </label>
-
-                            <!-- ✅ Longitud con datalist -->
-                            <label>Longitud
-                                <input list="longitudes" name="start_lng" value="-77.03" step="0.0001" required>
-                                <datalist id="longitudes">
-                                    <option value="-80.19">-80.19 – Miami, FL</option>
-                                    <option value="-118.24">-118.24 – Los Ángeles, CA</option>
-                                    <option value="-77.03">-77.03 – Washington, DC</option>
-                                    <option value="-74.00">-74.00 – Nueva York, NY</option>
-                                    <option value="-87.63">-87.63 – Chicago, IL</option>
-                                </datalist>
-                            </label>
-
-                            <!-- ✅ Retrasos con sugerencias -->
-                            <label>Retraso típico (mins)
-                                <input list="typical_delays" type="number" step="0.1"
-                                    name="delay_from_typical_traffic_mins" value="3.0" required>
-                                <datalist id="typical_delays">
-                                    <option value="2.0">2.0 – Bajo</option>
-                                    <option value="3.0">3.0 – Promedio</option>
-                                    <option value="5.0">5.0 – Moderado</option>
-                                    <option value="10.0">10.0 – Alto</option>
-                                </datalist>
-                            </label>
-
-                            <label>Retraso flujo libre (mins)
-                                <input list="freeflow_delays" type="number" step="0.1"
-                                    name="delay_from_free_flow_speed_mins" value="5.0" required>
-                                <datalist id="freeflow_delays">
-                                    <option value="3.0">3.0 – Bajo</option>
-                                    <option value="5.0">5.0 – Promedio</option>
-                                    <option value="8.0">8.0 – Alto</option>
-                                    <option value="12.0">12.0 – Muy alto</option>
-                                </datalist>
-                            </label>
-                        </div>
-
-
-                        <!-- 🏙️ Región -->
-                        <div>
-                            <h3 class="section-title text-green-600"><i class="fas fa-city mr-2"></i>Región</h3>
-
-                            <label>Estado
-                                <select name="state" required></select>
-                            </label>
-
-                            <label>Condado
-                                <select name="county" required></select>
-                            </label>
-
-                            <label>Zona Horaria
-                                <select name="local_time_zone">
-                                    <option value="US/Eastern">US/Eastern</option>
-                                    <option value="US/Central">US/Central</option>
-                                    <option value="US/Mountain">US/Mountain</option>
-                                    <option value="US/Pacific">US/Pacific</option>
-                                </select>
-                            </label>
-
-                            <h3 class="section-title text-purple-600 mt-6"><i class="fas fa-clock mr-2"></i>Tiempo</h3>
-
-                            <label>Hora
-                                <input type="number" name="hour" value="8" min="0" max="23">
-                            </label>
-
-                            <!-- ✅ Día de la semana en texto -->
-                            <label>Día de la semana
-                                <select name="day_of_week" required>
-                                    <option value="0">Domingo</option>
-                                    <option value="1">Lunes</option>
-                                    <option value="2" selected>Martes</option>
-                                    <option value="3">Miércoles</option>
-                                    <option value="4">Jueves</option>
-                                    <option value="5">Viernes</option>
-                                    <option value="6">Sábado</option>
-                                </select>
-                            </label>
-
-                            <!-- ✅ Mes en texto -->
-                            <label>Mes
-                                <select name="month" required>
-                                    <option value="1">Enero</option>
-                                    <option value="2">Febrero</option>
-                                    <option value="3">Marzo</option>
-                                    <option value="4">Abril</option>
-                                    <option value="5" selected>Mayo</option>
-                                    <option value="6">Junio</option>
-                                    <option value="7">Julio</option>
-                                    <option value="8">Agosto</option>
-                                    <option value="9">Septiembre</option>
-                                    <option value="10">Octubre</option>
-                                    <option value="11">Noviembre</option>
-                                    <option value="12">Diciembre</option>
-                                </select>
-                            </label>
-
-                            <!-- ✅ Año como desplegable -->
-                            <label>Año
-                                <select name="year" required>
-                                    <option value="2016">2016</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018" selected>2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                </select>
-                            </label>
-
-                            <label>¿Es fin de semana?
-                                <select name="is_weekend">
-                                    <option value="0" selected>No</option>
-                                    <option value="1">Sí</option>
-                                </select>
-                            </label>
-
-                            <label>Duración (mins)
-                                <input type="number" name="duration_mins" value="60">
-                            </label>
-                        </div>
-
-
-                        <!-- 🌤️ Clima -->
-                        <div>
-                            <h3 class="section-title text-orange-600"><i class="fas fa-cloud-sun mr-2"></i>Condiciones
-                                Climáticas</h3>
-
-                            <label>Temperatura (°F)
-                                <input type="number" name="temperature_f" value="58">
-                            </label>
-
-                            <label>Sensación térmica (°F)
-                                <input type="number" name="windchill_f" value="58">
-                            </label>
-
-                            <label>Humedad (%)
-                                <input type="number" name="humidity" value="94" min="0" max="100">
-                            </label>
-
-                            <label>Presión (in)
-                                <input type="number" step="0.01" name="pressure_in" value="29.46">
-                            </label>
-
-                            <label>Visibilidad (mi)
-                                <input type="number" step="0.1" name="visibility_mi" value="1">
-                            </label>
-
-                            <!-- ✅ Dirección del viento como desplegable -->
-                            <label>Dirección del viento
-                                <select name="wind_dir" required>
-                                    <option value="CALM" selected>CALM</option>
-                                    <option value="E">E</option>
-                                    <option value="ENE">ENE</option>
-                                    <option value="ESE">ESE</option>
-                                    <option value="East">East</option>
-                                    <option value="N">N</option>
-                                    <option value="NE">NE</option>
-                                    <option value="NNE">NNE</option>
-                                    <option value="NNW">NNW</option>
-                                    <option value="NW">NW</option>
-                                    <option value="North">North</option>
-                                    <option value="S">S</option>
-                                    <option value="SE">SE</option>
-                                    <option value="SSE">SSE</option>
-                                    <option value="SSW">SSW</option>
-                                    <option value="SW">SW</option>
-                                    <option value="South">South</option>
-                                    <option value="VAR">VAR</option>
-                                    <option value="Variable">Variable</option>
-                                    <option value="W">W</option>
-                                    <option value="WNW">WNW</option>
-                                    <option value="WSW">WSW</option>
-                                    <option value="West">West</option>
-                                </select>
-                            </label>
-
-                            <label>Velocidad del viento (mph)
-                                <input type="number" step="0.1" name="windspeed_mph" value="0.0">
-                            </label>
-
-                            <label>Precipitación (in)
-                                <input type="number" step="0.1" name="precipitation_in" value="0.0">
-                            </label>
-
-                            <!-- ✅ Condiciones climáticas como desplegable -->
-                            <label>Condiciones climáticas
-                                <select name="weather_conditions" required>
-                                    <option value="Clear">Clear</option>
-                                    <option value="Cloudy" selected>Cloudy</option>
-                                    <option value="Fair">Fair</option>
-                                    <option value="Light Snow">Light Snow</option>
-                                    <option value="Mostly Cloudy">Mostly Cloudy</option>
-                                    <option value="Overcast">Overcast</option>
-                                    <option value="Partly Cloudy">Partly Cloudy</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </label>
-                        </div>
-
-                    </div>
-
-                    <div class="text-center mt-8">
-                        <button type="submit" class="btn-primary"><i class="fas fa-brain mr-2"></i> Predecir
-                            Congestión</button>
-                    </div>
-                </form>
+        <!-- Sección de Validación -->
+        <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold text-gray-800">
+                    <i class="fas fa-table mr-3 text-purple-600"></i>Validación con Datos Reales
+                </h2>
+                <button id="toggleValidation" class="btn-primary py-2 px-4 text-sm">
+                    <i class="fas fa-eye mr-2"></i>Mostrar/Ocultar
+                </button>
             </div>
-
-            <div>
-                <div class="bg-white/95 rounded-3xl shadow-2xl p-6 mb-6">
-                    <h3 class="text-2xl font-bold mb-4 text-center"><i class="fas fa-chart-line mr-2"></i> Resultado de
-                        Predicción</h3>
-                    <div id="result" class="text-center text-gray-500">
-                        <i class="fas fa-info-circle mr-2"></i> Completa el formulario y haz clic en "Predecir"
-                    </div>
+            <div id="validationSection" class="hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+                            <tr>
+                                <th class="px-4 py-3 text-left">#</th>
+                                <th class="px-4 py-3 text-left">Estado</th>
+                                <th class="px-4 py-3 text-left">Condado</th>
+                                <th class="px-4 py-3 text-left">Real</th>
+                                <th class="px-4 py-3 text-left">Predicho</th>
+                                <th class="px-4 py-3 text-left">Confianza</th>
+                                <th class="px-4 py-3 text-left">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="validationTable" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="bg-white/95 rounded-3xl shadow-2xl p-6">
-                    <h4 class="text-lg font-semibold mb-3"><i class="fas fa-server mr-2"></i> Estado de la API</h4>
-                    <div id="apiStatus" class="flex items-center">
-                        <div class="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
-                        <span class="text-gray-600">Verificando conexión...</span>
+                <!-- Controles de paginación -->
+                <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+                    <div class="text-sm text-gray-600">
+                        Mostrando <span id="pageInfo" class="font-semibold">1-20</span> de <span id="totalRecords"
+                            class="font-semibold">100</span> registros
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="prevPage"
+                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-chevron-left mr-1"></i>Anterior
+                        </button>
+                        <span id="pageNumbers" class="flex gap-1"></span>
+                        <button id="nextPage"
+                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                            Siguiente<i class="fas fa-chevron-right ml-1"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="max-w-7xl mx-auto px-4 pb-8">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <form id="predictForm" class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                            <!-- 🌍 Ubicación & Tráfico -->
+                            <!-- 🌍 Ubicación & Tráfico -->
+                            <div>
+                                <h3 class="section-title text-blue-600">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>Ubicación & Tráfico
+                                </h3>
+
+                                <label>Severidad
+                                    <select name="severity" required>
+                                        <option value="0">0 - Muy leve</option>
+                                        <option value="1">1 - Leve</option>
+                                        <option value="2" selected>2 - Moderada</option>
+                                        <option value="3">3 - Grave</option>
+                                    </select>
+                                </label>
+
+                                <label>Distancia (millas)
+                                    <input type="number" step="0.1" name="distance_mi" value="2.0" required>
+                                </label>
+
+                                <!-- ✅ Latitud con datalist -->
+                                <label>Latitud
+                                    <input list="latitudes" name="start_lat" value="38.90" step="0.0001" required>
+                                    <datalist id="latitudes">
+                                        <option value="25.76">25.76 – Miami, FL</option>
+                                        <option value="34.05">34.05 – Los Ángeles, CA</option>
+                                        <option value="38.90">38.90 – Washington, DC</option>
+                                        <option value="40.71">40.71 – Nueva York, NY</option>
+                                        <option value="41.88">41.88 – Chicago, IL</option>
+                                    </datalist>
+                                </label>
+
+                                <!-- ✅ Longitud con datalist -->
+                                <label>Longitud
+                                    <input list="longitudes" name="start_lng" value="-77.03" step="0.0001" required>
+                                    <datalist id="longitudes">
+                                        <option value="-80.19">-80.19 – Miami, FL</option>
+                                        <option value="-118.24">-118.24 – Los Ángeles, CA</option>
+                                        <option value="-77.03">-77.03 – Washington, DC</option>
+                                        <option value="-74.00">-74.00 – Nueva York, NY</option>
+                                        <option value="-87.63">-87.63 – Chicago, IL</option>
+                                    </datalist>
+                                </label>
+
+                                <!-- ✅ Retrasos con sugerencias -->
+                                <label>Retraso típico (mins)
+                                    <input list="typical_delays" type="number" step="0.1"
+                                        name="delay_from_typical_traffic_mins" value="3.0" required>
+                                    <datalist id="typical_delays">
+                                        <option value="2.0">2.0 – Bajo</option>
+                                        <option value="3.0">3.0 – Promedio</option>
+                                        <option value="5.0">5.0 – Moderado</option>
+                                        <option value="10.0">10.0 – Alto</option>
+                                    </datalist>
+                                </label>
+
+                                <label>Retraso flujo libre (mins)
+                                    <input list="freeflow_delays" type="number" step="0.1"
+                                        name="delay_from_free_flow_speed_mins" value="5.0" required>
+                                    <datalist id="freeflow_delays">
+                                        <option value="3.0">3.0 – Bajo</option>
+                                        <option value="5.0">5.0 – Promedio</option>
+                                        <option value="8.0">8.0 – Alto</option>
+                                        <option value="12.0">12.0 – Muy alto</option>
+                                    </datalist>
+                                </label>
+                            </div>
+
+
+                            <!-- 🏙️ Región -->
+                            <div>
+                                <h3 class="section-title text-green-600"><i class="fas fa-city mr-2"></i>Región</h3>
+
+                                <label>Estado
+                                    <select name="state" required></select>
+                                </label>
+
+                                <label>Condado
+                                    <select name="county" required></select>
+                                </label>
+
+                                <label>Zona Horaria
+                                    <select name="local_time_zone">
+                                        <option value="US/Eastern">US/Eastern</option>
+                                        <option value="US/Central">US/Central</option>
+                                        <option value="US/Mountain">US/Mountain</option>
+                                        <option value="US/Pacific">US/Pacific</option>
+                                    </select>
+                                </label>
+
+                                <h3 class="section-title text-purple-600 mt-6"><i class="fas fa-clock mr-2"></i>Tiempo
+                                </h3>
+
+                                <label>Hora
+                                    <input type="number" name="hour" value="8" min="0" max="23">
+                                </label>
+
+                                <!-- ✅ Día de la semana en texto -->
+                                <label>Día de la semana
+                                    <select name="day_of_week" required>
+                                        <option value="0">Domingo</option>
+                                        <option value="1">Lunes</option>
+                                        <option value="2" selected>Martes</option>
+                                        <option value="3">Miércoles</option>
+                                        <option value="4">Jueves</option>
+                                        <option value="5">Viernes</option>
+                                        <option value="6">Sábado</option>
+                                    </select>
+                                </label>
+
+                                <!-- ✅ Mes en texto -->
+                                <label>Mes
+                                    <select name="month" required>
+                                        <option value="1">Enero</option>
+                                        <option value="2">Febrero</option>
+                                        <option value="3">Marzo</option>
+                                        <option value="4">Abril</option>
+                                        <option value="5" selected>Mayo</option>
+                                        <option value="6">Junio</option>
+                                        <option value="7">Julio</option>
+                                        <option value="8">Agosto</option>
+                                        <option value="9">Septiembre</option>
+                                        <option value="10">Octubre</option>
+                                        <option value="11">Noviembre</option>
+                                        <option value="12">Diciembre</option>
+                                    </select>
+                                </label>
+
+                                <!-- ✅ Año como desplegable -->
+                                <label>Año
+                                    <select name="year" required>
+                                        <option value="2016">2016</option>
+                                        <option value="2017">2017</option>
+                                        <option value="2018" selected>2018</option>
+                                        <option value="2019">2019</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                    </select>
+                                </label>
+
+                                <label>¿Es fin de semana?
+                                    <select name="is_weekend">
+                                        <option value="0" selected>No</option>
+                                        <option value="1">Sí</option>
+                                    </select>
+                                </label>
+
+                                <label>Duración (mins)
+                                    <input type="number" name="duration_mins" value="60">
+                                </label>
+                            </div>
+
+
+                            <!-- 🌤️ Clima -->
+                            <div>
+                                <h3 class="section-title text-orange-600"><i
+                                        class="fas fa-cloud-sun mr-2"></i>Condiciones
+                                    Climáticas</h3>
+
+                                <label>Temperatura (°F)
+                                    <input type="number" name="temperature_f" value="58">
+                                </label>
+
+                                <label>Sensación térmica (°F)
+                                    <input type="number" name="windchill_f" value="58">
+                                </label>
+
+                                <label>Humedad (%)
+                                    <input type="number" name="humidity" value="94" min="0" max="100">
+                                </label>
+
+                                <label>Presión (in)
+                                    <input type="number" step="0.01" name="pressure_in" value="29.46">
+                                </label>
+
+                                <label>Visibilidad (mi)
+                                    <input type="number" step="0.1" name="visibility_mi" value="1">
+                                </label>
+
+                                <!-- ✅ Dirección del viento como desplegable -->
+                                <label>Dirección del viento
+                                    <select name="wind_dir" required>
+                                        <option value="CALM" selected>CALM</option>
+                                        <option value="E">E</option>
+                                        <option value="ENE">ENE</option>
+                                        <option value="ESE">ESE</option>
+                                        <option value="East">East</option>
+                                        <option value="N">N</option>
+                                        <option value="NE">NE</option>
+                                        <option value="NNE">NNE</option>
+                                        <option value="NNW">NNW</option>
+                                        <option value="NW">NW</option>
+                                        <option value="North">North</option>
+                                        <option value="S">S</option>
+                                        <option value="SE">SE</option>
+                                        <option value="SSE">SSE</option>
+                                        <option value="SSW">SSW</option>
+                                        <option value="SW">SW</option>
+                                        <option value="South">South</option>
+                                        <option value="VAR">VAR</option>
+                                        <option value="Variable">Variable</option>
+                                        <option value="W">W</option>
+                                        <option value="WNW">WNW</option>
+                                        <option value="WSW">WSW</option>
+                                        <option value="West">West</option>
+                                    </select>
+                                </label>
+
+                                <label>Velocidad del viento (mph)
+                                    <input type="number" step="0.1" name="windspeed_mph" value="0.0">
+                                </label>
+
+                                <label>Precipitación (in)
+                                    <input type="number" step="0.1" name="precipitation_in" value="0.0">
+                                </label>
+
+                                <!-- ✅ Condiciones climáticas como desplegable -->
+                                <label>Condiciones climáticas
+                                    <select name="weather_conditions" required>
+                                        <option value="Clear">Clear</option>
+                                        <option value="Cloudy" selected>Cloudy</option>
+                                        <option value="Fair">Fair</option>
+                                        <option value="Light Snow">Light Snow</option>
+                                        <option value="Mostly Cloudy">Mostly Cloudy</option>
+                                        <option value="Overcast">Overcast</option>
+                                        <option value="Partly Cloudy">Partly Cloudy</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <div class="text-center mt-8">
+                            <button type="submit" class="btn-primary"><i class="fas fa-brain mr-2"></i> Predecir
+                                Congestión</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+    <div class="bg-white/95 rounded-3xl shadow-2xl p-6 mb-6">
+        <h3 class="text-2xl font-bold mb-4 text-center"><i class="fas fa-chart-line mr-2"></i> Resultado de Predicción</h3>
+        <div id="result" class="text-center text-gray-500">
+            <i class="fas fa-info-circle mr-2"></i> Completa el formulario y haz clic en "Predecir"
+        </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
+    <div class="bg-white/95 rounded-3xl shadow-2xl p-6 mb-6">
+        <h4 class="text-lg font-semibold mb-3 text-center"><i class="fas fa-server mr-2"></i> Estado de la API</h4>
+        <div id="apiStatus" class="flex items-center justify-center">
+            <div class="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
+            <span class="text-gray-600">Verificando conexión...</span>
+        </div>
+    </div>
 
-            // ✅ Verificar conexión con la API
-            try {
-                const res = await fetch("https://server-congestion-predictor-production.up.railway.app/health");
-                const data = await res.json();
-                document.getElementById("apiStatus").innerHTML = data.status === "ok"
-                    ? `<div class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div><span class="text-green-600">API conectada ✓</span>`
-                    : `<div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div><span class="text-red-600">API desconectada ✗</span>`;
-            } catch {
-                document.getElementById("apiStatus").innerHTML = `<div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div><span class="text-red-600">Error de conexión ✗</span>`;
-            }
+   <!-- Matriz de Confusión -->
+<div class="bg-white/95 rounded-3xl shadow-2xl p-6 mb-6">
+    <h4 class="text-lg font-semibold mb-4 text-center">
+        <i class="fas fa-chart-bar mr-2 text-purple-600"></i>Matriz de Confusión
+    </h4>
+    <div class="flex justify-center items-center">
+        <img id="matrizImg" src="matriz.jpg" alt="Matriz de Confusión"
+            class="rounded-lg shadow-md w-full h-auto max-h-[800px] object-contain cursor-pointer hover:opacity-90 transition">
+    </div>
+    <p class="text-xs text-gray-500 text-center mt-2">
+        <i class="fas fa-search-plus mr-1"></i>Haz clic en la imagen para ampliar
+    </p>
+</div>
 
-            // ✅ Cargar estados y condados
-            const countiesByState = {
-                "AL": ["Baldwin", "Jefferson", "Madison", "Mobile"],
-                "AR": ["Pulaski"],
-                "AZ": ["Coconino", "Maricopa", "Pima"],
-                "CA": ["Alameda", "Contra Costa", "El Dorado", "Kern", "Los Angeles", "Marin", "Monterey", "Napa", "Orange", "Placer", "Riverside", "Sacramento", "San Bernardino", "San Diego", "San Francisco", "San Joaquin", "San Mateo", "Santa Barbara", "Santa Clara", "Santa Cruz", "Solano", "Sonoma", "Stanislaus", "Ventura", "Yolo", "Nevada"],
-                "CO": ["Adams", "Arapahoe", "Boulder", "Clear Creek", "Denver", "Douglas", "Eagle", "Garfield", "Jefferson", "Larimer", "Weld"],
-                "CT": ["Fairfield", "Hartford", "Middlesex", "New Haven"],
-                "DC": ["District of Columbia"],
-                "DE": ["New Castle"],
-                "FL": ["Bay", "Brevard", "Broward", "Collier", "Duval", "Hillsborough", "Lee", "Manatee", "Martin", "Miami-Dade", "Okaloosa", "Orange", "Osceola", "Palm Beach", "Pasco", "Pinellas", "Polk", "Sarasota", "Seminole", "St. Johns", "Volusia", "Walton"],
-                "GA": ["Chatham", "Cherokee", "Clayton", "Cobb", "DeKalb", "Dekalb", "Fulton", "Gwinnett", "Henry"],
-                "IA": ["Polk"],
-                "IL": ["Cook", "DuPage", "Kane", "Lake", "Will"],
-                "IN": ["Marion"],
-                "KY": ["Boone", "Fayette", "Jefferson"],
-                "LA": ["East Baton Rouge", "Jefferson", "Orleans"],
-                "MA": ["Barnstable", "Bristol", "Hampden", "Middlesex", "Norfolk", "Plymouth", "Suffolk", "Worcester"],
-                "MD": ["Anne Arundel", "Baltimore City", "Baltimore County", "Carroll", "Frederick", "Howard", "Montgomery", "Prince George's"],
-                "MI": ["Macomb", "Oakland", "Washtenaw", "Wayne"],
-                "MN": ["Hennepin", "Ramsey"],
-                "MO": ["Boone", "Greene", "Jackson", "St. Charles", "St. Louis County"],
-                "NC": ["Buncombe", "Mecklenburg", "Wake"],
-                "NH": ["Rockingham"],
-                "NJ": ["Bergen", "Burlington", "Camden", "Essex", "Hudson", "Middlesex", "Monmouth", "Morris", "Ocean", "Passaic", "Somerset", "Sussex"],
-                "NM": ["Bernalillo"],
-                "NV": ["Clark", "Washoe"],
-                "NY": ["Albany", "Bronx", "Kings", "Nassau", "New York", "Queens", "Richmond", "Rockland", "Suffolk", "Westchester"],
-                "OH": ["Cuyahoga", "Franklin", "Summit"],
-                "OK": ["Oklahoma", "Tulsa"],
-                "OR": ["Clackamas", "Columbia", "Multnomah", "Umatilla"],
-                "PA": ["Allegheny", "Berks", "Bucks", "Butler", "Carbon", "Chester", "Crawford", "Cumberland", "Dauphin", "Delaware", "Erie", "Lancaster", "Lehigh", "Montgomery", "Philadelphia", "Westmoreland"],
-                "RI": ["Providence"],
-                "SC": ["Charleston", "Greenville", "Horry", "Jasper", "Lexington", "Richland"],
-                "TN": ["Davidson", "Knox", "Shelby", "Sevier"],
-                "TX": ["Bexar", "Collin", "Dallas", "Denton", "Fort Bend", "Galveston", "Harris", "Hidalgo", "McLennan", "Smith", "Tarrant", "Travis", "Webb", "Williamson"],
-                "UT": ["Salt Lake", "Utah"],
-                "VA": ["Arlington", "Fairfax", "Fairfax County", "Loudoun", "Prince William", "Richmond", "Richmond City", "Stafford"],
-                "WA": ["King", "Kittitas", "Pierce", "Snohomish", "Spokane"],
-                "WI": ["Milwaukee"],
-                "Other": ["Other"]
-            };
+<!-- Modal de Zoom -->
+<div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4" onclick="closeModal()">
+    <div class="relative max-w-7xl max-h-full">
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-white bg-red-500 hover:bg-red-600 rounded-full w-10 h-10 flex items-center justify-center transition z-10">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+        <img id="modalImg" src="" alt="Matriz de Confusión Ampliada" class="rounded-lg max-w-full max-h-[90vh] object-contain">
+        <p class="text-white text-center mt-4 text-sm">
+            <i class="fas fa-info-circle mr-2"></i>Haz clic fuera de la imagen para cerrar
+        </p>
+    </div>
+</div>
 
-            const stateSelect = document.querySelector("select[name='state']");
-            const countySelect = document.querySelector("select[name='county']");
+    <!-- Información del Proyecto -->
+    <div class="bg-white/95 rounded-3xl shadow-2xl p-6 mb-6">
+        <h4 class="text-lg font-semibold mb-4 text-center">
+            <i class="fas fa-user-graduate mr-2 text-blue-600"></i>Información del Proyecto
+        </h4>
+        <div class="flex justify-center items-center">
+            <img src="profesor.png" alt="Profesor" class="rounded-lg shadow-md w-48 h-auto">
+        </div>
+        <p class="text-xs text-gray-500 text-center mt-2">Proyecto desarrollado bajo supervisión académica</p>
+    </div>
+</div>
 
-            stateSelect.innerHTML = Object.keys(countiesByState).map(s => `<option value="${s}">${s}</option>`).join("");
-            countySelect.innerHTML = countiesByState[stateSelect.value].map(c => `<option value="${c}">${c}</option>`).join("");
+            </div>
+        </div>
 
-            stateSelect.addEventListener("change", () => {
+        <script>
+            document.addEventListener("DOMContentLoaded", async () => {
+                // ✅ Cargar datos de validación
+                let validationData = [];
+                let currentPage = 1;
+                const itemsPerPage = 20;
+
+                try {
+                    const response = await fetch('validation.json');
+                    validationData = await response.json();
+                    renderValidationTable(validationData, currentPage);
+                    setupPagination();
+                } catch (error) {
+                    console.error('Error cargando datos de validación:', error);
+                }
+
+                // ✅ Toggle para mostrar/ocultar sección de validación
+                document.getElementById('toggleValidation').addEventListener('click', () => {
+                    const section = document.getElementById('validationSection');
+                    section.classList.toggle('hidden');
+                });
+
+                // ✅ Configurar controles de paginación
+                function setupPagination() {
+                    const totalPages = Math.ceil(validationData.length / itemsPerPage);
+
+                    document.getElementById('prevPage').addEventListener('click', () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            renderValidationTable(validationData, currentPage);
+                            updatePaginationControls(totalPages);
+                        }
+                    });
+
+                    document.getElementById('nextPage').addEventListener('click', () => {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            renderValidationTable(validationData, currentPage);
+                            updatePaginationControls(totalPages);
+                        }
+                    });
+
+                    updatePaginationControls(totalPages);
+                }
+
+                // ✅ Actualizar controles de paginación
+                function updatePaginationControls(totalPages) {
+                    const prevBtn = document.getElementById('prevPage');
+                    const nextBtn = document.getElementById('nextPage');
+                    const pageInfo = document.getElementById('pageInfo');
+                    const totalRecords = document.getElementById('totalRecords');
+                    const pageNumbers = document.getElementById('pageNumbers');
+
+                    // Deshabilitar botones según la página actual
+                    prevBtn.disabled = currentPage === 1;
+                    nextBtn.disabled = currentPage === totalPages;
+
+                    // Actualizar información de registros
+                    const start = (currentPage - 1) * itemsPerPage + 1;
+                    const end = Math.min(currentPage * itemsPerPage, validationData.length);
+                    pageInfo.textContent = `${start}-${end}`;
+                    totalRecords.textContent = validationData.length;
+
+                    // Generar números de página
+                    pageNumbers.innerHTML = '';
+                    const maxVisiblePages = 5;
+                    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+                    if (endPage - startPage < maxVisiblePages - 1) {
+                        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                    }
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        const pageBtn = document.createElement('button');
+                        pageBtn.textContent = i;
+                        pageBtn.className = `px-3 py-2 rounded transition ${i === currentPage
+                            ? 'bg-purple-600 text-white font-semibold'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`;
+                        pageBtn.addEventListener('click', () => {
+                            currentPage = i;
+                            renderValidationTable(validationData, currentPage);
+                            updatePaginationControls(totalPages);
+                        });
+                        pageNumbers.appendChild(pageBtn);
+                    }
+                }
+
+                // ✅ Renderizar tabla de validación con paginación
+                function renderValidationTable(data, page = 1) {
+                    const tbody = document.getElementById('validationTable');
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    const pageData = data.slice(start, end);
+
+                    tbody.innerHTML = pageData.map((row, idx) => {
+                        const index = start + idx;
+                        const realClass = row.Real_Congestion_Speed === 'Fast' ? 'result-fast' :
+                            row.Real_Congestion_Speed === 'Slow' ? 'result-slow' : 'result-moderate';
+                        const predClass = row.Predicted_Congestion_Speed === 'Fast' ? 'result-fast' :
+                            row.Predicted_Congestion_Speed === 'Slow' ? 'result-slow' : 'result-moderate';
+                        const match = row.Real_Congestion_Speed === row.Predicted_Congestion_Speed;
+
+                        return `
+            <tr class="hover:bg-gray-50 cursor-pointer transition" data-index="${index}">
+                <td class="px-4 py-3 font-medium">${index + 1}</td>
+                <td class="px-4 py-3">${row.state}</td>
+                <td class="px-4 py-3">${row.county}</td>
+                <td class="px-4 py-3 font-semibold ${realClass}">${row.Real_Congestion_Speed}</td>
+                <td class="px-4 py-3 font-semibold ${predClass}">${row.Predicted_Congestion_Speed}</td>
+                <td class="px-4 py-3">${(row.Confidence * 100).toFixed(1)}%</td>
+                <td class="px-4 py-3">
+                    <button class="load-data-btn bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition text-xs" data-index="${index}">
+                        <i class="fas fa-upload mr-1"></i>Cargar
+                    </button>
+                    ${match ? '<i class="fas fa-check-circle text-green-500 ml-2"></i>' : '<i class="fas fa-times-circle text-red-500 ml-2"></i>'}
+                </td>
+            </tr>
+        `;
+                    }).join('');
+
+                    // Agregar eventos a los botones de carga
+                    document.querySelectorAll('.load-data-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const index = parseInt(btn.dataset.index);
+                            loadDataToForm(validationData[index]);
+                        });
+                    });
+
+                    // Agregar evento de clic a las filas
+                    document.querySelectorAll('#validationTable tr').forEach(row => {
+                        row.addEventListener('click', () => {
+                            const index = parseInt(row.dataset.index);
+                            loadDataToForm(validationData[index]);
+                        });
+                    });
+                }
+
+                // ✅ Cargar datos en el formulario
+                // ✅ Cargar datos en el formulario
+                function loadDataToForm(data) {
+                    const form = document.getElementById('predictForm');
+
+                    // Función auxiliar para formatear números según tipo de campo
+                    const formatNumber = (value, decimals = 2) => {
+                        if (value === null || value === undefined) return 0;
+                        const num = parseFloat(value);
+                        if (isNaN(num)) return 0;
+                        return decimals === 0 ? Math.round(num) : parseFloat(num.toFixed(decimals));
+                    };
+
+                    // Mapear los datos con el formato correcto para cada campo
+                    form.querySelector('[name="severity"]').value = data.severity;
+                    form.querySelector('[name="start_lat"]').value = formatNumber(data.start_lat, 6);
+                    form.querySelector('[name="start_lng"]').value = formatNumber(data.start_lng, 6);
+                    form.querySelector('[name="distance_mi"]').value = formatNumber(data.distance_mi, 1); // 1 decimal
+                    form.querySelector('[name="delay_from_typical_traffic_mins"]').value = formatNumber(data.delay_from_typical_traffic_mins, 1); // 1 decimal
+                    form.querySelector('[name="delay_from_free_flow_speed_mins"]').value = formatNumber(data.delay_from_free_flow_speed_mins, 1); // 1 decimal
+                    form.querySelector('[name="state"]').value = data.state;
+
+                    // Actualizar condados según el estado
+                    const countySelect = form.querySelector('[name="county"]');
+                    countySelect.innerHTML = countiesByState[data.state].map(c => `<option value="${c}">${c}</option>`).join("");
+                    countySelect.value = data.county;
+
+                    form.querySelector('[name="local_time_zone"]').value = data.local_time_zone;
+                    form.querySelector('[name="temperature_f"]').value = formatNumber(data.temperature_f, 0); // entero
+                    form.querySelector('[name="windchill_f"]').value = formatNumber(data.windchill_f, 0); // entero
+                    form.querySelector('[name="humidity"]').value = formatNumber(data.humidity, 0); // entero
+                    form.querySelector('[name="pressure_in"]').value = formatNumber(data.pressure_in, 2);
+                    form.querySelector('[name="visibility_mi"]').value = formatNumber(data.visibility_mi, 1);
+
+                    // Manejar wind_dir que puede ser 0 o string
+                    const windDir = (data.wind_dir === 0 || data.wind_dir === "0" || !data.wind_dir) ? "CALM" : data.wind_dir;
+                    form.querySelector('[name="wind_dir"]').value = windDir;
+
+                    form.querySelector('[name="windspeed_mph"]').value = formatNumber(data.windspeed_mph, 1);
+                    form.querySelector('[name="precipitation_in"]').value = formatNumber(data.precipitation_in, 1);
+
+                    // Manejar weather_conditions que puede ser 0 o string
+                    const weatherCond = (data.weather_conditions === 0 || data.weather_conditions === "0" || !data.weather_conditions) ? "Clear" : data.weather_conditions;
+                    form.querySelector('[name="weather_conditions"]').value = weatherCond;
+
+                    form.querySelector('[name="hour"]').value = formatNumber(data.hour, 0);
+                    form.querySelector('[name="day_of_week"]').value = data.day_of_week;
+                    form.querySelector('[name="month"]').value = data.month;
+                    form.querySelector('[name="year"]').value = data.year;
+                    form.querySelector('[name="is_weekend"]').value = data.is_weekend;
+                    form.querySelector('[name="duration_mins"]').value = formatNumber(data.duration_mins, 0);
+
+                    // Hacer scroll al formulario
+                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    // Mostrar notificación
+                    document.getElementById("result").innerHTML = `
+        <div class="text-center text-blue-600 fade-in">
+            <i class="fas fa-check-circle text-3xl mb-2"></i>
+            <p class="font-semibold">Datos cargados correctamente</p>
+            <p class="text-sm mt-1">Predicción real: <span class="font-bold">${data.Real_Congestion_Speed}</span></p>
+            <p class="text-sm">Haz clic en "Predecir" para validar</p>
+        </div>
+    `;
+                }
+
+                // ✅ Verificar conexión con la API
+                try {
+                    const res = await fetch("https://server-congestion-predictor-production.up.railway.app/health");
+                    const data = await res.json();
+                    document.getElementById("apiStatus").innerHTML = data.status === "ok"
+                        ? `<div class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div><span class="text-green-600">API conectada ✓</span>`
+                        : `<div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div><span class="text-red-600">API desconectada ✗</span>`;
+                } catch {
+                    document.getElementById("apiStatus").innerHTML = `<div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div><span class="text-red-600">Error de conexión ✗</span>`;
+                }
+
+                // ✅ Cargar estados y condados
+                const countiesByState = {
+                    "AL": ["Baldwin", "Jefferson", "Madison", "Mobile", "Montgomery", "Shelby", "Tuscaloosa"],
+                    "AR": ["Pulaski", "Mississippi"],
+                    "AZ": ["Coconino", "Maricopa", "Pima"],
+                    "CA": ["Alameda", "Contra Costa", "El Dorado", "Kern", "Los Angeles", "Marin", "Monterey", "Napa", "Orange", "Placer", "Riverside", "Sacramento", "San Bernardino", "San Diego", "San Francisco", "San Joaquin", "San Mateo", "Santa Barbara", "Santa Clara", "Santa Cruz", "Solano", "Sonoma", "Stanislaus", "Ventura", "Yolo", "Nevada"],
+                    "CO": ["Adams", "Arapahoe", "Boulder", "Clear Creek", "Denver", "Douglas", "Eagle", "Garfield", "Jefferson", "Larimer", "Weld","Montezuma"],
+                    "CT": ["Fairfield", "Hartford", "Middlesex", "New Haven"],
+                    "DC": ["District of Columbia"],
+                    "DE": ["New Castle"],
+                    "FL": ["Bay", "Brevard", "Broward", "Collier", "Duval", "Hillsborough", "Lee", "Manatee", "Martin", "Miami-Dade", "Okaloosa", "Orange", "Osceola", "Palm Beach", "Pasco", "Pinellas", "Polk", "Sarasota", "Seminole", "St. Johns", "Volusia", "Walton"],
+                    "GA": ["Chatham", "Cherokee", "Clayton", "Cobb", "DeKalb", "Dekalb", "Fulton", "Gwinnett", "Henry"],
+                    "IA": ["Polk", "Clay", "O'Brien"],
+                    "IL": ["Cook", "DuPage", "Kane", "Lake", "Will"],
+                    "IN": ["Marion", "Morgan"],
+                    "KY": ["Boone", "Fayette", "Jefferson", "Kenton", "Warren"],
+                    "LA": ["East Baton Rouge", "Jefferson", "Orleans"],
+                    "MA": ["Barnstable", "Bristol", "Hampden", "Middlesex", "Norfolk", "Plymouth", "Suffolk", "Worcester"],
+                    "MD": ["Anne Arundel", "Baltimore City", "Baltimore County", "Carroll", "Frederick", "Howard", "Montgomery", "Prince George's"],
+                    "MI": ["Macomb", "Oakland", "Washtenaw", "Wayne"],
+                    "MN": ["Hennepin", "Ramsey"],
+                    "MO": ["Boone", "Greene", "Jackson", "St. Charles", "St. Louis County"],
+                    "NC": ["Buncombe", "Mecklenburg", "Wake"],
+                    "NH": ["Rockingham", "Hillsborough"],
+                    "NJ": ["Bergen", "Burlington", "Camden", "Essex", "Hudson", "Middlesex", "Monmouth", "Morris", "Ocean", "Passaic", "Somerset", "Sussex"],
+                    "NM": ["Bernalillo"],
+                    "NV": ["Clark", "Washoe"],
+                    "NY": ["Albany", "Bronx", "Kings", "Nassau", "New York", "Queens", "Richmond", "Rockland", "Suffolk", "Westchester"],
+                    "OH": ["Cuyahoga", "Franklin", "Summit", "Delaware"],
+                    "OK": ["Oklahoma", "Tulsa"],
+                    "OR": ["Clackamas", "Columbia", "Multnomah", "Umatilla", "Yamhill"],
+                    "PA": ["Allegheny", "Berks", "Bucks", "Butler", "Carbon", "Chester", "Crawford", "Cumberland", "Dauphin", "Delaware", "Erie", "Lancaster", "Lehigh", "Montgomery", "Philadelphia", "Westmoreland", "Lebanon"],
+                    "RI": ["Providence"],
+                    "SC": ["Charleston", "Greenville", "Horry", "Jasper", "Lexington", "Richland", "Haywood"],
+                    "TN": ["Davidson", "Knox", "Shelby", "Sevier"],
+                    "TX": ["Bexar", "Collin", "Dallas", "Denton", "Fort Bend", "Galveston", "Harris", "Hidalgo", "McLennan", "Smith", "Tarrant", "Travis", "Webb", "Williamson", "Grayson"],
+                    "UT": ["Salt Lake", "Utah"],
+                    "VA": ["Arlington", "Fairfax", "Fairfax County", "Loudoun", "Prince William", "Richmond", "Richmond City", "Stafford"],
+                    "WA": ["King", "Kittitas", "Pierce", "Snohomish", "Spokane"],
+                    "WI": ["Milwaukee", "Fond du Lac"],
+                    "KS": ["Pottawatomie", "Neosho"],
+                    "Other": ["Other"]
+                };
+
+                const stateSelect = document.querySelector("select[name='state']");
+                const countySelect = document.querySelector("select[name='county']");
+
+                stateSelect.innerHTML = Object.keys(countiesByState).map(s => `<option value="${s}">${s}</option>`).join("");
                 countySelect.innerHTML = countiesByState[stateSelect.value].map(c => `<option value="${c}">${c}</option>`).join("");
-            });
 
-            // ✅ Función para mostrar resultado detallado
-            function renderPrediction(pred) {
-                const resultDiv = document.getElementById("result");
-                const confidence = (pred.confidence * 100).toFixed(1);
-                const resultClass = pred.predicted_class === 'Fast' ? 'result-fast' : pred.predicted_class === 'Slow' ? 'result-slow' : 'result-moderate';
-                const icon = pred.predicted_class === 'Fast' ? 'fa-tachometer-alt' : pred.predicted_class === 'Slow' ? 'fa-exclamation-triangle' : 'fa-traffic-light';
+                stateSelect.addEventListener("change", () => {
+                    countySelect.innerHTML = countiesByState[stateSelect.value].map(c => `<option value="${c}">${c}</option>`).join("");
+                });
 
-                resultDiv.innerHTML = `
+                // ✅ Función para mostrar resultado detallado
+                function renderPrediction(pred) {
+                    const resultDiv = document.getElementById("result");
+                    const confidence = (pred.confidence * 100).toFixed(1);
+                    const resultClass = pred.predicted_class === 'Fast' ? 'result-fast' : pred.predicted_class === 'Slow' ? 'result-slow' : 'result-moderate';
+                    const icon = pred.predicted_class === 'Fast' ? 'fa-tachometer-alt' : pred.predicted_class === 'Slow' ? 'fa-exclamation-triangle' : 'fa-traffic-light';
+
+                    resultDiv.innerHTML = `
       <div class="fade-in">
         <div class="text-center mb-6">
           <i class="fas ${icon} text-4xl ${resultClass} mb-2"></i>
@@ -482,50 +788,79 @@
         </div>
       </div>
     `;
-            }
+                }
 
-            // ✅ Función para mostrar errores
-            function showError(title, message) {
-                document.getElementById("result").innerHTML = `
+                // ✅ Función para mostrar errores
+                function showError(title, message) {
+                    document.getElementById("result").innerHTML = `
       <div class="text-center text-red-600 fade-in">
         <i class="fas fa-exclamation-circle text-3xl mb-2"></i>
         <p class="font-semibold">${title}</p>
         <p class="text-sm mt-1">${message}</p>
       </div>
     `;
-            }
+                }
 
-            // ✅ Enviar formulario
-            document.getElementById("predictForm").addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const data = Object.fromEntries(formData.entries());
-                for (let key in data) if (!isNaN(data[key]) && data[key] !== "") data[key] = Number(data[key]);
+                // ✅ Enviar formulario
+                document.getElementById("predictForm").addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const data = Object.fromEntries(formData.entries());
+                    for (let key in data) if (!isNaN(data[key]) && data[key] !== "") data[key] = Number(data[key]);
 
-                document.getElementById("result").innerHTML = `
+                    document.getElementById("result").innerHTML = `
       <div class="loading-spinner mb-4"></div>
       <div class="text-gray-600"><i class="fas fa-cog fa-spin mr-2"></i>Analizando datos del tráfico...</div>
     `;
 
-                try {
-                    const res = await fetch("https://server-congestion-predictor-production.up.railway.app/predict", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data),
-                    });
-                    const json = await res.json();
+                    try {
+                        const res = await fetch("https://server-congestion-predictor-production.up.railway.app/predict", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(data),
+                        });
+                        const json = await res.json();
 
-                    if (json.status === "success") {
-                        renderPrediction(json.prediction);
-                    } else {
-                        showError("Error en la predicción", json.detail || "No se pudo procesar la solicitud.");
+                        if (json.status === "success") {
+                            renderPrediction(json.prediction);
+                        } else {
+                            showError("Error en la predicción", json.detail || "No se pudo procesar la solicitud.");
+                        }
+                    } catch {
+                        showError("Error de conexión", "No se pudo conectar con la API.");
                     }
-                } catch {
-                    showError("Error de conexión", "No se pudo conectar con la API.");
-                }
+                });
             });
-        });
-    </script>
+
+            // Función para abrir modal de zoom
+const matrizImg = document.getElementById('matrizImg');
+const imageModal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImg');
+
+matrizImg.addEventListener('click', () => {
+    modalImg.src = matrizImg.src;
+    imageModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+});
+
+// Función para cerrar modal
+window.closeModal = function() {
+    imageModal.classList.add('hidden');
+    document.body.style.overflow = 'auto'; // Restaurar scroll
+};
+
+// Prevenir que el clic en la imagen cierre el modal
+modalImg.addEventListener('click', (e) => {
+    e.stopPropagation();
+});
+
+// Cerrar con tecla ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !imageModal.classList.contains('hidden')) {
+        closeModal();
+    }
+});
+        </script>
 </body>
 
 </html>
